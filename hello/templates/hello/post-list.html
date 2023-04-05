@@ -1,0 +1,23 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+Post-List
+{% endblock %}
+{% block content_login %}
+<h2>All die Bilder...</h2>
+
+<ul>
+    {% for post in object_list %}
+    <div style="width: 15%; float:left; background:gray; margin:1%">
+      <figure>
+        <figcaption>{{ post.title }}</figcaption>
+        <a href="{{post.cover.url}}" target="_blank">
+            <img width = "100%" src="{{ post.cover.url}}" alt="{{ post.title }}">
+        </a>
+       </figure>
+    </div>
+    {% endfor %}
+</ul>
+<div style="clear:both">
+Hallo
+</div>
+{% endblock %}
