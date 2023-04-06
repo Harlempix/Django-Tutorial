@@ -1,5 +1,6 @@
 """
 V1.0 Ab hier beginnt die Versionierung
+V1.0.1 nur diese Änderung
 
 Django settings for web_project project.
 
