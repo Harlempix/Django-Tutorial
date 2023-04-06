@@ -2,4 +2,5 @@
 db.sqlite3
 *.pyc
 web_project/set_environment.sh
+media/
 venv/
