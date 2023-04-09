@@ -11,13 +11,29 @@ Post-List
       <figure>
         <figcaption>{{ post.title }}</figcaption>
         <a href="{{post.cover.url}}" target="_blank">
-            <img width = "100%" src="{{ post.cover.url}}" alt="{{ post.title }}">
+            <img width = "100%" src="{{ post.thumbnail.url}}" alt="{{ post.title }}">
         </a>
+        <a href="/create_thumbnail?post_id={{ post.id}}&page={{ page_obj.number}}">Create Thumbnail</a>
        </figure>
     </div>
     {% endfor %}
 </ul>
 <div style="clear:both">
-Hallo
+  {# .... **Now the pagination section** .... #}
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="/post-list?page={{ page_obj.previous_page_number }}">previous</a>
+              {% endif %}
+              <span class="page-current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="/post-list?page={{ page_obj.next_page_number }}">next</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}
 </div>
 {% endblock %}
