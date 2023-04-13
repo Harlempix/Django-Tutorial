@@ -14,6 +14,34 @@ class LogMessage(models.Model):
         date = timezone.localtime(self.log_date)
         return f"'{self.message}' logged on {date.strftime('%A, %d %B, %Y at %X')}"
 
+#--------------------- Multi-Pic-Handling ---------------------------------------
+
+class AllCats(models.Model): # erlaubte Kategorien für Bildserien
+    cat = models.CharField(max_length=80, db_index=True, unique=True)
+    description = models.TextField()
+
+class PicSeries(models.Model): # 1 ...n shots, die zusammengehören
+    title = models.CharField(max_length=80)
+    dateCreated = models.DateTimeField()
+    dateCaptured = models.DateTimeField()
+    dateModified = models.DateTimeField()
+    owner = models.CharField(max_length=80)
+    description = models.TextField()
+    heroIdBigPic = models.BigIntegerField("ID from Hero-BigPic")
+    heroIdThumbnail = models.BigIntegerField("ID from Hero-Thumbnail")
+    catPrime = models.ForeignKey(AllCats, on_delete=models.CASCADE) # Primäre Kategorie der Bildserie
+
+class SeriesCats(models.Model): # Alle Kategorien einer Serie
+    cat = models.ForeignKey(AllCats, on_delete=models.CASCADE)
+    series = models.ForeignKey(PicSeries, on_delete=models.CASCADE)
+
+class SinglePic(models.Model):
+    series = models.ForeignKey(PicSeries, on_delete=models.CASCADE)
+    bigPic = models.ImageField(upload_to='images/')
+    thumbnail = models.ImageField(upload_to='images/thumbnails')
+
+#------------------ /Multi-Pic-Handling ------------------------------------------
+
 class Post(models.Model):
     title = models.TextField()
     owner = models.TextField(default="unknown")

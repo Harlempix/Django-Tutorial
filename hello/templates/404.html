@@ -1,0 +1,16 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+    404
+{% endblock %}
+
+{% blog content %}
+<h1>{{ exception }}</h1>
+{% endblock %}
+
+{% block content_login %}
+    <h2>Die angeforderte Seite konnte nicht gefunden werden</h2>
+{% endblock %}
+{% block content_logout %}
+<h2>Bitte melden Sie sich an</h2>
+<a>Diese Seite ist nur für registrierte Benutzer</a>
+{% endblock %}

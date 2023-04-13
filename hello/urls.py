@@ -1,4 +1,5 @@
 from django.urls import path, include
+
 from hello import views
 from hello.models import LogMessage
 from hello.models import Post
@@ -22,4 +23,9 @@ urlpatterns = [
     path("accounts/login/", views.log_message, name="login"),
     path("accounts/logout/", views.log_message, name="logout"),
     path("create_thumbnail/", views.create_thumbnail, name="create_thumbnail"),
+#-------------------------------- Multi-Pic-Handling-------------------------------------------
+    path("List_AllCats/", views.List_AllCats.as_view(), name="hello_ListAllCats"),
+    path("Neu_AllCats/", views.Neu_AllCats, name="hello_NeuAllCats"),
+    path("Edit_AllCats/<str:cat>", views.Edit_AllCats.as_view(), name="hello_EditAllCats"),
+
 ]

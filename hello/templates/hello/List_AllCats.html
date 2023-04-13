@@ -1,0 +1,34 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+    List_AllCats
+{% endblock %}
+{% block content_login %}
+    <h2>Alle Kategorien zur Kategorisierung von Bildserien</h2>
+
+    {% if object_list %}
+        <table class="AllCats_list">
+            <thead>
+            <tr>
+                <th>Kategorie</th>
+                <th>Beschreibung</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for AllCats in object_list %}
+                <tr>
+                    <td><a href="{% url 'hello_EditAllCats' cat=AllCats.cat %}">{{ AllCats.cat }}</a></td>
+                    <td>{{ AllCats.description }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Keine Kategorien verfügbar</p>
+    {% endif %}
+
+
+{% endblock %}
+{% block content_logout %}
+<h2>Bitte melden Sie sich an</h2>
+<a>Diese Seite ist nur für registrierte Benutzer</a>
+{% endblock %}

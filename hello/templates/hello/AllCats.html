@@ -1,0 +1,16 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+AllCats
+{% endblock %}
+{% block content_login %}
+<h2>Kategorie für Bildserie</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}
+{% block content_logout %}
+<h2>Bitte melden Sie sich an</h2>
+<a>Diese Seite ist nur für registrierte Benutzer</a>
+{% endblock %}

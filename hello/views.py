@@ -13,10 +13,17 @@ from hello.models import LogMessage
 from hello.models import Post
 from django.views.generic import ListView
 from django.views.generic import CreateView
+from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 from pathlib import Path
 from django.http import HttpResponseRedirect
-
+from hello.models import AllCats
+from hello.models import PicSeries
+from hello.models import SinglePic
+from hello.models import SeriesCats
+from hello.forms import AllCatsForm
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 class HomeListView(ListView):
     """Renders the home page, with a list of all messages."""
@@ -86,3 +93,37 @@ def new_image(request):
     else:
         return render(request, "hello/post-add.html", {"form": form})
     return redirect("post-list")
+
+#------------------------------- Multi-Pic-Handling -----------------------------
+class List_AllCats(ListView):
+    """Renders a page, with a list of all Cats."""
+    model = AllCats
+    template_name = "hello/List_AllCats.html"
+    ordering = ['cat']
+
+
+def Neu_AllCats(request):
+    form = AllCatsForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            newCat = form.save(commit=False)
+            newCat.save()
+            return redirect("hello_ListAllCats")
+        else:
+            return render(request, "hello/AllCats.html", {"form": form})
+    else:
+        return render(request, "hello/AllCats.html", {"form": form})
+
+class Edit_AllCats(UpdateView):
+    model=AllCats
+    fields="__all__"
+    template_name='hello/AllCats.html'
+    success_url='/List_AllCats/'
+    def get_object(self):
+        if self.request.user.is_authenticated: # Update nur für angemeldete User
+            try: # Für den Fall, dass die Seite manuell mit falschen Parameter aufgerufen wurde
+                return AllCats.objects.get(cat=self.kwargs['cat'])
+            except AllCats.DoesNotExist:
+                raise Http404("Die angeforderte Kategorie existiert nicht")
+        else:
+            raise Http404("Diese Funktion steht nur angemeldeten Usern zur Verfügung")

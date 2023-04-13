@@ -15,6 +15,17 @@
         <a href="{% url 'log' %}" class="navbar-item">Log Message</a>
         <a href="{% url 'post-list' %}" class="navbar-item">Post-List</a>
         <a href="{% url 'post-add' %}" class="navbar-item">Post-Add</a>
+
+        <div class="dropdown">
+            <button class="dropbtn">Kategorien
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{% url 'hello_ListAllCats' %}">Liste</a>
+                <a href="{% url 'hello_NeuAllCats' %}">Neu</a>
+             </div>
+        </div>
+        
     {% endif %}
     <a href="{% url 'about' %}" class="navbar-item">About</a>
     <a href="{% url 'contact' %}" class="navbar-item">Contact</a>
