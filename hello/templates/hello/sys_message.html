@@ -1,0 +1,12 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+    sys_message
+{% endblock %}
+{% block content_login %}
+    <h2>Systemmeldung</h2>
+    <a>{{ MsgLogin }}</a>
+    {% endblock %}
+{% block content_logout %}
+<h2>Systemmeldung</h2>
+<a>{{ MsgLogout }}</a>
+{% endblock %}

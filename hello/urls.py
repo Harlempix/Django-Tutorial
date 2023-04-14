@@ -26,6 +26,7 @@ urlpatterns = [
 #-------------------------------- Multi-Pic-Handling-------------------------------------------
     path("List_AllCats/", views.List_AllCats.as_view(), name="hello_ListAllCats"),
     path("Neu_AllCats/", views.Neu_AllCats, name="hello_NeuAllCats"),
-    path("Edit_AllCats/<str:cat>", views.Edit_AllCats.as_view(), name="hello_EditAllCats"),
+    path("Edit_AllCats/<str:cat>", views.Edit_AllCats, name="hello_EditAllCats"),
 
 ]
+

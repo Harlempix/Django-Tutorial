@@ -114,7 +114,8 @@ def Neu_AllCats(request):
     else:
         return render(request, "hello/AllCats.html", {"form": form})
 
-class Edit_AllCats(UpdateView):
+####################################################################################################
+class Try_Edit_AllCats(UpdateView):##### 404-Handling Funktioniert leider nicht
     model=AllCats
     fields="__all__"
     template_name='hello/AllCats.html'
@@ -127,3 +128,28 @@ class Edit_AllCats(UpdateView):
                 raise Http404("Die angeforderte Kategorie existiert nicht")
         else:
             raise Http404("Diese Funktion steht nur angemeldeten Usern zur Verfügung")
+####################################################################################################
+
+def Edit_AllCats( request, cat):
+    context = {}
+    if request.user.is_authenticated: # Update nur für angemeldete User
+        try: # Für den Fall, dass die Seite manuell mit falschen Parameter aufgerufen wurde
+            iCat = AllCats.objects.get(cat=cat)
+        except AllCats.DoesNotExist: # Aufruf mit ungültiger Kategorie
+            form = AllCatsForm(request.POST or None)
+            context['form'] = form
+            context['MsgLogin'] = "Fehler: Die Kategorie " + cat + " ist nicht im System"
+            return render(request, "hello/sys_message.html", context)
+        form = AllCatsForm(request.POST or None, instance = iCat)
+        if form.is_valid():
+            form.save()
+            return redirect("hello_ListAllCats")
+        else:
+            context['form'] = form
+            return render(request, "hello/AllCats.html", context)
+    else: # Irgendwie hat ein unangemeldeter Benutzer diese Seite direkt aufgerufen
+        form = AllCatsForm(request.POST or None)
+        context['form'] = form
+        context['MsgLogout'] = "Fehler: Diese Funktion steht nur angemeldeten Benutzern zur Verfügung"
+        return render(request, "hello/sys_message.html", context)
+
