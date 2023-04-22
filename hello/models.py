@@ -14,6 +14,34 @@ class LogMessage(models.Model):
         date = timezone.localtime(self.log_date)
         return f"'{self.message}' logged on {date.strftime('%A, %d %B, %Y at %X')}"
 
+class Post(models.Model):
+    title = models.TextField()
+    owner = models.TextField(default="unknown")
+    log_date = models.DateTimeField(auto_now=True)
+    cover = models.ImageField(upload_to='images/')
+    thumbnail = models.ImageField(default='images/thumbnails/no_thumbnail.jpg', upload_to='images/thumbnails')
+
+
+    def __str__(self):
+        return self.title
+
+    def create_thumbnail(self): # Erzeugt eine Thumbnail-Datei gleichen Namens im Unterverzeichnis "thumbnails"
+        if self.id: # Nur in persistenten Objekten anwendbar.
+            img_path_p, img_path_f = os.path.split(self.cover.path)
+            thn_path_p = os.path.join(img_path_p, "thumbnails")
+            thn_path_f = img_path_f
+            thn_path = os.path.join(thn_path_p, thn_path_f)
+            img_thumbnail = Image.open(self.cover)
+            img_thumbnail.thumbnail((256,256))
+            # Save thumbnail as File
+            if os.path.exists(thn_path):
+                os.remove(thn_path) # vorhandene Thumbnails werden ersetzt
+            img_thumbnail.save(thn_path)
+            thn_path_model = os.path.join("images/thumbnails/", img_path_f)
+            self.thumbnail=thn_path_model
+            self.save()
+        return 
+
 #--------------------- Multi-Pic-Handling ---------------------------------------
 
 class AllCats(models.Model): # erlaubte Kategorien für Bildserien
@@ -27,9 +55,10 @@ class PicSeries(models.Model): # 1 ...n shots, die zusammengehören
     dateModified = models.DateTimeField()
     owner = models.CharField(max_length=80)
     description = models.TextField()
-    heroIdBigPic = models.BigIntegerField("ID from Hero-BigPic")
-    heroIdThumbnail = models.BigIntegerField("ID from Hero-Thumbnail")
+    hero = models.ImageField(null=True)
     catPrime = models.ForeignKey(AllCats, on_delete=models.CASCADE) # Primäre Kategorie der Bildserie
+
+
 
 class SeriesCats(models.Model): # Alle Kategorien einer Serie
     cat = models.ForeignKey(AllCats, on_delete=models.CASCADE)
@@ -38,43 +67,24 @@ class SeriesCats(models.Model): # Alle Kategorien einer Serie
 class SinglePic(models.Model):
     series = models.ForeignKey(PicSeries, on_delete=models.CASCADE)
     bigPic = models.ImageField(upload_to='images/')
-    thumbnail = models.ImageField(upload_to='images/thumbnails')
+    thumbnail = models.ImageField(default='images/thumbnails/no_thumbnail.jpg', upload_to='images/thumbnails')
+
+    def create_thumbnail(self): # Erzeugt eine Thumbnail-Datei gleichen Namens im Unterverzeichnis "thumbnails"
+        if self.id: # Nur in persistenten Objekten anwendbar.
+            img_path_p, img_path_f = os.path.split(self.bigPic.path)
+            thn_path_p = os.path.join(img_path_p, "thumbnails")
+            thn_path_f = img_path_f
+            thn_path = os.path.join(thn_path_p, thn_path_f)
+            img_thumbnail = Image.open(self.bigPic)
+            img_thumbnail.thumbnail((256,256))
+            # Save thumbnail as File
+            if os.path.exists(thn_path):
+                os.remove(thn_path) # vorhandene Thumbnails werden ersetzt
+            img_thumbnail.save(thn_path)
+            thn_path_model = os.path.join("images/thumbnails/", img_path_f)
+            self.thumbnail=thn_path_model
+            self.save()
+        return 
 
 #------------------ /Multi-Pic-Handling ------------------------------------------
 
-class Post(models.Model):
-    title = models.TextField()
-    owner = models.TextField(default="unknown")
-    log_date = models.DateTimeField(auto_now=True)
-    cover = models.ImageField(upload_to='images/')
-    thumbnail = models.ImageField(default='images/thumbnails/no_thumbnail.jpg', upload_to='images/thumbnails')
-
-
-    def __str__(self):
-        return self.title
-
-    def create_thumbnail(self):
-        if self.id:
-            try:
-                img_path_p, img_path_f = os.path.split(self.cover.path)
-                thn_path_p, thn_path_f = os.path.split(self.thumbnail.path)
-            except:
-                thn_path_f="no_thumbnail.jpg"
-                thn_path_p="/root/tutorial/media/images/thumbnails"
-#            if img_path_f == thn_path_f:
-#                return self.thumbnail.path # Thumnail existiert schon
-            else:
-                # Create thumbnail as Image-Object
-                img_thumbnail = Image.open(self.cover)
-                img_thumbnail.thumbnail((256,256))
-                # Save thumbnail as File
-                thn_path = thn_path_p + "/" + img_path_f
-                if os.path.exists(thn_path):
-                    os.remove(thn_path)
-                img_thumbnail.save(thn_path)
-                thn_path_model = "/images/thumbnails/" + img_path_f
-                self.thumbnail=thn_path_model
-                self.save()
-                return
-        else:
-            return 

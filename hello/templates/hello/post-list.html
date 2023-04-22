@@ -13,7 +13,7 @@ Post-List
         <a href="{{post.cover.url}}" target="_blank">
             <img width = "100%" src="{{ post.thumbnail.url}}" alt="{{ post.title }}">
         </a>
-        <a href="/create_thumbnail?post_id={{ post.id}}&page={{ page_obj.number}}">Create Thumbnail</a>
+        <a href="/create_thumbnail?post_id={{ post.id}}&page={{ page_obj.number}}&url={{ request.get_full_path }}">Create Thumbnail</a>
        </figure>
     </div>
     {% endfor %}

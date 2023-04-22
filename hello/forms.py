@@ -2,6 +2,7 @@ from django import forms
 from hello.models import LogMessage
 from .models import Post
 from .models import AllCats
+from .models import PicSeries
 
 class LogMessageForm(forms.ModelForm):
     class Meta:
@@ -14,6 +15,9 @@ class PostForm(forms.ModelForm):
         fields = ("title", "cover",)
 
 #-------------------------- Multi-Pic-Handling ------------------------------
+class SysMessageForm(forms.Form):
+    dummy = forms.CharField(label="Sollte nie zu sehen sein", max_length=100)
+
 class AllCatsForm(forms.ModelForm):
     class Meta:
         model = AllCats
@@ -30,3 +34,27 @@ class AllCatsForm(forms.ModelForm):
                 "unique": "Diese Kategorie existiert bereits"
             },
         }
+
+class f_PicSeries_c(forms.Form):
+    choices = tuple(AllCats.objects.all().values_list("cat", "description"))
+    title = forms.CharField(max_length=80)
+    description = forms.CharField()
+    catPrime = forms.ChoiceField(choices=choices)
+    dateCaptured = forms.DateTimeField()
+    file_field = forms.ImageField(
+        widget=forms.ClearableFileInput(attrs={"multiple": True})
+    )
+
+class f_PicSeries_u(forms.Form):
+    choices = tuple(AllCats.objects.all().values_list("cat", "description"))
+    title = forms.CharField(max_length=80)
+    owner = forms.CharField(required=False, disabled=True)
+    description = forms.CharField()
+    catPrime = forms.ChoiceField(choices=choices)
+    dateCaptured = forms.DateTimeField()
+    file_field = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={"multiple": True})
+    )
+
+

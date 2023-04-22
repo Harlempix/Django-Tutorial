@@ -1,0 +1,38 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+    t_PicSeries_List
+{% endblock %}
+{% block content_login %}
+    <h2>Alle Bildserien</h2>
+
+    {% if object_list %}
+        <table class="PicSeries_List">
+            <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Owner</th>
+                <th>Erfasst</th>
+                <th>Hero</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for PicSeries in object_list %}
+                <tr>
+                    <td><a href="{% url 'hello_PicSeries_Update' PicSeriesId=PicSeries.pk %}">{{ PicSeries.title }}</a></td>
+                    <td>{{ PicSeries.owner }}</td>
+                    <td>{{ PicSeries.dateCreated }}</td>
+                    <td><img width = "100%" src="{{ PicSeries.hero.url }}" alt="{{ PicSeries.title }}"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Keine Bildserien verfügbar</p>
+    {% endif %}
+
+
+{% endblock %}
+{% block content_logout %}
+<h2>Bitte melden Sie sich an</h2>
+<a>Diese Seite ist nur für registrierte Benutzer</a>
+{% endblock %}

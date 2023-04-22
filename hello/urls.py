@@ -24,9 +24,14 @@ urlpatterns = [
     path("accounts/logout/", views.log_message, name="logout"),
     path("create_thumbnail/", views.create_thumbnail, name="create_thumbnail"),
 #-------------------------------- Multi-Pic-Handling-------------------------------------------
+    path("SysMessage/", views.SysMessage, name="hello_SysMessage"),
     path("List_AllCats/", views.List_AllCats.as_view(), name="hello_ListAllCats"),
     path("Neu_AllCats/", views.Neu_AllCats, name="hello_NeuAllCats"),
     path("Edit_AllCats/<str:cat>", views.Edit_AllCats, name="hello_EditAllCats"),
-
+    path("PicSeries/List", views.v_PicSeries_List.as_view(), name="hello_PicSeries_List"),
+    path("PicSeries/Create", views.v_PicSeries_c, name="hello_PicSeries_Create"),
+    path("PicSeries/Update/<int:PicSeriesId>", views.v_PicSeries_u, name="hello_PicSeries_Update"),
+    path("PicSeries/SetHero", views.v_SetHero, name="hello_v_SetHero"),
+    path("PicSeries/DeleteSinglePic", views.v_SinglePic_d, name="hello_v_SinglePic_d"),
 ]
 

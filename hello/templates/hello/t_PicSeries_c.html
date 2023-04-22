@@ -1,0 +1,16 @@
+{% extends "hello/layout.html" %}
+{% block title %}
+    t_PicSeries_c
+{% endblock %}
+{% block content_login %}
+    <h2>Neue Bildserie erfassen</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit New Post</button>
+    </form>
+{% endblock %}
+{% block content_logout %}
+<h2>Bitte melden Sie sich an</h2>
+<a>Diese Seite ist nur für registrierte Benutzer</a>
+{% endblock %}
