@@ -6,7 +6,7 @@ from hello.models import Post
 
 
 home_list_view = views.HomeListView.as_view(
-    queryset=LogMessage.objects.order_by("-log_date")[:5],  # :5 limits the results to the five most recent
+    queryset=LogMessage.objects.order_by("-log_date")[:20],  # :5 limits the results to the five most recent
     context_object_name="message_list",
     template_name="hello/home.html",
 )

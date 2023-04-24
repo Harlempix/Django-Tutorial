@@ -153,7 +153,7 @@ def Edit_AllCats( request, cat):
 #            context['form'] = form
             context['MsgLogin'] = "Fehler: Die Kategorie " + cat + " ist nicht im System"
             return render(request, "hello/sys_message.html", context)
-        form = AllCatsForm(request.POST, request.FILES or None, instance = iCat)
+        form = AllCatsForm(request.POST or None, instance = iCat)
         if form.is_valid():
             form.save()
             return redirect("hello_ListAllCats")
