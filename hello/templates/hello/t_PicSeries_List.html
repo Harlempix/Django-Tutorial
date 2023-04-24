@@ -1,36 +1,42 @@
 {% extends "hello/layout.html" %}
+{% load django_bootstrap5 %}
 {% block title %}
     t_PicSeries_List
 {% endblock %}
 {% block content_login %}
-    <h2>Alle Bildserien</h2>
-
+<div class="container">
     {% if object_list %}
-        <table class="PicSeries_List">
-            <thead>
-            <tr>
-                <th>Titel</th>
-                <th>Owner</th>
-                <th>Erfasst</th>
-                <th>Hero</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for PicSeries in object_list %}
-                <tr>
-                    <td><a href="{% url 'hello_PicSeries_Update' PicSeriesId=PicSeries.pk %}">{{ PicSeries.title }}</a></td>
-                    <td>{{ PicSeries.owner }}</td>
-                    <td>{{ PicSeries.dateCreated }}</td>
-                    <td><img width = "100%" src="{{ PicSeries.hero.url }}" alt="{{ PicSeries.title }}"></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Keine Bildserien verfügbar</p>
+        <div class="row my-5">
+            <h2>Alle Bilderserien</h2>
+        </div>
+        <div class="row my-4">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">Titel</th>
+                    <th scope="col">Titelbild</th>
+                    <th class="d-none d-md-table-cell" scope="col">Erfasst am</th>
+                    <th scope="col">Copyright</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for PicSeries in object_list %}
+                        <tr>
+                            <th scope="row"><a href="{% url 'hello_PicSeries_Update' PicSeriesId=PicSeries.pk %}">{{ PicSeries.title }}</a></th>
+                            <td><img width = "30%" src="{{ PicSeries.hero.url }}" alt="{{ PicSeries.title }}"></td>
+                            <td class="d-none d-md-table-cell">{{ PicSeries.dateCreated }}</td>
+                            <td>{{ PicSeries.owner }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   {% else %}
+        <div class="row my-5">
+            <h2>Keine Bildserien verfügbar</h2>
+        </div>
     {% endif %}
-
-
+</div>
 {% endblock %}
 {% block content_logout %}
 <h2>Bitte melden Sie sich an</h2>

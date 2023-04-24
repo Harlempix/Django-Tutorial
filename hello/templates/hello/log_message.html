@@ -1,11 +1,16 @@
 {% extends "hello/layout.html" %}
-{% block title %}
-    Log a message
-{% endblock %}
+{% load django_bootstrap5 %}
+{% block title %}LogMessage{% endblock %}
 {% block content_login %}
-<form method="POST" class="log-form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Log</button>
-</form>
+        <div class="container">
+            <div class="row my-5">
+                <div class="col-md-12">
+                    <form action="/log/" method="post" class="form">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 {% endblock %}

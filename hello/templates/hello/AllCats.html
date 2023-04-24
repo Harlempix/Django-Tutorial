@@ -1,14 +1,23 @@
 {% extends "hello/layout.html" %}
+{% load django_bootstrap5 %}
 {% block title %}
 AllCats
 {% endblock %}
 {% block content_login %}
-<h2>Kategorie für Bildserie</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-  </form>
+<div class="container">
+  <div class="row my-5">
+      <div class="col-md-12">
+        <h2>Bildkategorie erfassen</h2>
+          <form method="post" class="form">
+              {% csrf_token %}
+              {% bootstrap_form form %}
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <input class="btn btn-primary" type="reset" value="Reset">
+              <a href="{% url "hello_ListAllCats" %}"" class="btn btn-secondary" role="button" aria-pressed="true">Cancel</a>
+          </form>
+      </div>
+  </div>
+</div>
 {% endblock %}
 {% block content_logout %}
 <h2>Bitte melden Sie sich an</h2>

@@ -1,14 +1,23 @@
 {% extends "hello/layout.html" %}
+{% load django_bootstrap5 %}
 {% block title %}
     t_PicSeries_c
 {% endblock %}
 {% block content_login %}
-    <h2>Neue Bildserie erfassen</h2>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit New Post</button>
-    </form>
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-12">
+          <h2>Neue Bildserie erfassen</h2>
+            <form method="post" enctype="multipart/form-data" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <input class="btn btn-primary" type="reset" value="Reset">
+                <a href="{% url "hello_PicSeries_List" %}"" class="btn btn-secondary" role="button" aria-pressed="true">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block content_logout %}
 <h2>Bitte melden Sie sich an</h2>

@@ -1,18 +1,86 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'hello/site.css' %}"/>
-    <script src="{% static 'hello/site.js' %}"></script>
-
-</head>
+    <head>
+        <meta charset="utf-8"/>
+        <html lang="de"></html>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'hello/site.css' %}"/>
+        <script src="{% static 'hello/site.js' %}"></script>
+        {% load bootstrap5 %}
+        {% load django_bootstrap5 %}
+        {% bootstrap_css %}       
+    </head>
 
 <body>
-    <div class="topnav" id="myTopnav">
-    <a href="{% url 'home' %}" class="active">Home</a>
+    <!---- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Sachsenwaldhirsch</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+
+                    <!--------------------------------------------- Restricted Content ------------------------------------------->
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Bildkategorien
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'hello_ListAllCats' %}">Liste</a></li>
+                            <li><a class="dropdown-item" href="{% url 'hello_NeuAllCats' %}">Neue Kategorie</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Bildserien
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <li><a class="dropdown-item" href="{% url 'hello_PicSeries_List' %}">Liste</a></li>
+                            <li><a class="dropdown-item" href="{% url 'hello_PicSeries_Create' %}">Neue Bilderserie</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'log' %}">Logbucheintrag</a>
+                    </li>
+                    {% endif %}
+                    <!-------------------------------------------------------------------------------------------------------------->
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">Impressum</a>
+                    </li>
+              
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Kontakt</a>
+                    </li>
+
+                    <!---------------------------------------------- Login / Logout -------------------------------------------------->
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+            
+                  
+              
+<!--        
     {% if user.is_authenticated %}
         <a href="{% url 'log' %}">Log Message</a>
         <a href="{% url 'post-list' %}">Post-List</a>
@@ -47,22 +115,22 @@
         <a href="{% url 'login' %}">Login</a>
     {% endif %}    
     <a href="javascript:void(0);" class="icon" onclick="navFunction()">&#9776;</a>
-</div>
+</div>-->
 
-<div class="body-content">
-{% block content %}
-{% endblock %}
-{% if user.is_authenticated %}
-        {% block content_login %}
-        {% endblock %}
-    {% else %}
-        {% block content_logout %}
-        {% endblock %}
-    {% endif %}
-    <hr/>
-    <footer>
-        <p>&copy; 2018</p>
-    </footer>
-</div>
+
+
+{% block content %}{% endblock %}
+    {% if user.is_authenticated %}
+        {% block content_login %}{% endblock %}
+{% else %}
+    {% block content_logout %}{% endblock %}
+{% endif %}
+<hr/>
+<footer>
+    <p>&copy; Harald Lemke 2023</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

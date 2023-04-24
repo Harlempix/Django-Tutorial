@@ -1,53 +1,53 @@
 {% extends "hello/layout.html" %}
+{% load django_bootstrap5 %}
 {% block title %}
     t_PicSeries_u
 {% endblock %}
 {% block content_login %}
-    <h2>Bildserie bearbeiten</h2>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-    
-        <button type="button" onclick="myFunction()">Click me!</button>
-        <button type="button" id="alertButton">Alert</button>
-        <button type="submit">Speichern</button>
-        <script>
-            document.getElementById("alertButton").onclick = function(){
-                alertMessage();
-            }
-        </script>
-
-        <hr>
-        <ul>
-            {% for singlePic in singlePics %}
-            <div style="width: 15%; float:left; background:gray; margin:1%">
-              
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-12">
+          <h2>Bildserie bearbeiten</h2>
+            <form method="post" enctype="multipart/form-data" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <input class="btn btn-primary" type="reset" value="Reset">
+                <a href="{% url "hello_PicSeries_List" %}"" class="btn btn-secondary" role="button" aria-pressed="true">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-12">
+            <h3>Bilder</h3>
+        </div>
+    </div>
+    <div class="row my-1">
+        {% for singlePic in singlePics %}
+            <div class="col-md-2">
                 {% if singlePic.thumbnail.url == hero.url %}
                 <figure>
-                    <div style= background:lightgreen>
                     <a href="{{ singlePic.bigPic.url }}" target="_blank">
                         <img width = "100%" src="{{ singlePic.thumbnail.url }}" alt="{{ singlePic.thumbnail.url }}" border = "5">
                     </a>
                     <a>Aktuelles Katalogbild</a>
-                    </div>
                 </figure>
                 {% else %}
                 <figure>
-                    <div style= background:gray>
                     <a href="{{ singlePic.bigPic.url }}" target="_blank">
                         <img width = "100%" src="{{ singlePic.thumbnail.url }}" alt="{{ singlePic.thumbnail.url }}">
                     </a>
                     <a href="/PicSeries/DeleteSinglePic?singlePicId={{ singlePic.pk }}&url={{ request.get_full_path }}">Bild löschen</a><br>
                     <a href="/PicSeries/SetHero?heroId={{ singlePic.pk }}&PicSeriesId={{ picSeriesId }}&url={{ request.get_full_path }}">Als Katalogbild setzen</a>
-                    </div>
                 </figure>
                 {% endif %}
-            
             </div>
-            {% endfor %}
-        </ul>
-        <div style="clear:both"></div>
-    </form>
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock %}
 {% block content_logout %}
 <h2>Bitte melden Sie sich an</h2>
